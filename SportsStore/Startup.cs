@@ -23,11 +23,11 @@ namespace SportsStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddTransient<IProductRepository, FakeProductRepository>();
+            //services.AddTransient<IProductRepository, FakeProductRepository>(); this was the fake repository
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration["Data:SportStoreProducts:ConnectionString"]));
-            services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddTransient<IProductRepository, EFProductRepository>();//replaced fake repository with real on
             services.AddMvc();
         }
 
