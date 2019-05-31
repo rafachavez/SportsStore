@@ -12,10 +12,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SportsStore
 {
+
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+
         public Startup(IConfiguration configuration) =>
             Configuration = configuration;
 
@@ -23,15 +23,13 @@ namespace SportsStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddTransient<IProductRepository, FakeProductRepository>(); this was the fake repository
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration["Data:SportStoreProducts:ConnectionString"]));
-            services.AddTransient<IProductRepository, EFProductRepository>();//replaced fake repository with real on
+            services.AddTransient<IProductRepository, EFProductRepository>();
             services.AddMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
@@ -39,21 +37,15 @@ namespace SportsStore
             app.UseStaticFiles();
             app.UseMvc(routes => {
                 routes.MapRoute(
+                    name: "pagination",
+                    template: "Products/Page{productPage}",
+                    defaults: new { Controller = "Product", action = "List" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Product}/{action=List}/{id?}");
             });
-
             SeedData.EnsurePopulated(app);
-
-            /*if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });*/
         }
     }
 }
