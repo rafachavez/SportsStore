@@ -33,6 +33,7 @@ namespace SportsStore
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -46,6 +47,7 @@ namespace SportsStore
                 routes.MapRoute(
                     name: null,
                     template: "{category}/Page{productPage:int}",
+                    //defaults: new { controller = "Admin", action = "Index" }
                     defaults: new { controller = "Product", action = "List" }
                 );
 
